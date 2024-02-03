@@ -3,14 +3,15 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "The intent of this skill is to provide a simple way to access the Brittains Record, a book of the history of the Brittains family.",
+          "summary": "House Elf is here to record everything like you are the king or queen of the house.",
           "examplePhrases": [
-            "Brittains Record",
-            "Brittains book",
-            "Brittains codex"
+            "House Elf",
+            "Hello House Elf!",
+            "Ask House Elf",
+            "House Elf help"
           ],
-          "name": "Brittains Record",
-          "description": "The intent of this skill is to provide a simple way to access the Brittains Record, a book of the history of the Brittains family."
+          "name": "House Elf",
+          "description": "House Elf is here to record everything like you are the king or queen of the house."
         }
       },
       "isAvailableWorldwide": false,

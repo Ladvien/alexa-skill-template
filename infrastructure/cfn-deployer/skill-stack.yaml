@@ -40,7 +40,19 @@ Resources:
                 Action:
                   - logs:*
                 Resource: arn:aws:logs:*:*:*
-  
+              - Effect: Allow
+                Action:
+                  - dynamodb:BatchGetItem
+                  - dynamodb:BatchWriteItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:DescribeTable
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:UpdateItem
+                Resource: "arn:aws:dynamodb:us-west-2:553031127594:table/house_codex"
+
   ################
   # Lambda
   ################
@@ -64,7 +76,7 @@ Resources:
       FunctionName: !GetAtt AlexaSkillFunction.Arn
       Principal: alexa-appkit.amazon.com
       EventSourceToken: !Ref SkillId
-  
+
   AlexaSkillFunctionEventPermissionSmartHome:
     Type: AWS::Lambda::Permission
     Properties:
@@ -72,7 +84,7 @@ Resources:
       FunctionName: !GetAtt AlexaSkillFunction.Arn
       Principal: alexa-connectedhome.amazon.com
       EventSourceToken: !Ref SkillId
-  
+
   AlexaSkillFunctionLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:

@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "our codex",
+            "invocationName": "house elf",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
@@ -16,27 +16,15 @@
                     "samples": []
                 },
                 {
-                    "name": "HelloWorldIntent",
-                    "slots": [],
-                    "samples": [
-                        "hello",
-                        "how are you",
-                        "say hi world",
-                        "say hi",
-                        "hi",
-                        "say hello world",
-                        "say hello"
-                    ]
-                },
-                {
                     "name": "RecordIntent",
                     "slots": [],
                     "samples": [
                         "record",
                         "record this",
-                        "write this",
-                        "write this to the database",
-                        "put this in the database"
+                        "write this down",
+                        "take a note",
+                        "make a note",
+                        "write this"
                     ]
                 },
                 {

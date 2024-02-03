@@ -4,6 +4,7 @@
 # Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
 # session persistence, api calls, and more.
 # This sample is built using the handler classes approach in skill builder.
+from decimal import Decimal
 import logging
 
 from ask_sdk_core.skill_builder import SkillBuilder
@@ -11,67 +12,69 @@ from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.dispatch_components import AbstractExceptionHandler
 import ask_sdk_core.utils as ask_utils
 from ask_sdk_core.handler_input import HandlerInput
-
+import boto3
 from ask_sdk_model import Response
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-class LaunchRequestHandler(AbstractRequestHandler):
-    """Handler for Skill Launch."""
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        
-        return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        speak_output = "Welcome, you can say Hello or Help. Which would you like to try?"
+class HouseElf:
+    """Encapsulates an Amazon DynamoDB table of record data."""
 
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(speak_output)
-                .response
-        )
+    def __init__(self, region="us-west-2"):
+        boto3.setup_default_session(region_name=region)
+        self.dynamodb = boto3.resource("dynamodb")
+        self.table = self.dynamodb.Table("house_codex")
+
+    def record(self, record: dict):
+        self.table.put_item(Item=record)
 
 
 class RecordIntentHandler(AbstractRequestHandler):
     """Handler for Record Intent."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return ask_utils.is_intent_name("RecordIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "From RecordIntent!"
+        speak_output = "Hey Casey, tell Rebekah she's got a damn fine ass!!"
 
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .response
+        house_elf = HouseElf()
+
+        house_elf.record(
+            {"user_name": "thomas", "event": speak_output}
         )
 
-class HelloWorldIntentHandler(AbstractRequestHandler):
-    """Handler for Hello World Intent."""
+        return handler_input.response_builder.speak(speak_output).response
+
+
+class LaunchRequestHandler(AbstractRequestHandler):
+    """Handler for Skill Launch."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return ask_utils.is_intent_name("HelloWorldIntent")(handler_input)
+
+        return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Hello Python World from Classes!"
+        speak_output = (
+            "Welcome, you can say Hello or Help. Which would you like to try?"
+        )
 
         return (
-            handler_input.response_builder
-                .speak(speak_output)
-                # .ask("add a reprompt if you want to keep the session open for the user to respond")
-                .response
+            handler_input.response_builder.speak(speak_output)
+            .ask(speak_output)
+            .response
         )
 
 
 class HelpIntentHandler(AbstractRequestHandler):
     """Handler for Help Intent."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return ask_utils.is_intent_name("AMAZON.HelpIntent")(handler_input)
@@ -81,33 +84,31 @@ class HelpIntentHandler(AbstractRequestHandler):
         speak_output = "You can say hello to me! How can I help?"
 
         return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(speak_output)
-                .response
+            handler_input.response_builder.speak(speak_output)
+            .ask(speak_output)
+            .response
         )
 
 
 class CancelOrStopIntentHandler(AbstractRequestHandler):
     """Single handler for Cancel and Stop Intent."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return (ask_utils.is_intent_name("AMAZON.CancelIntent")(handler_input) or
-                ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input))
+        return ask_utils.is_intent_name("AMAZON.CancelIntent")(
+            handler_input
+        ) or ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speak_output = "Goodbye!"
 
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .response
-        )
+        return handler_input.response_builder.speak(speak_output).response
 
 
 class SessionEndedRequestHandler(AbstractRequestHandler):
     """Handler for Session End."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return ask_utils.is_request_type("SessionEndedRequest")(handler_input)
@@ -119,27 +120,28 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
 
         return handler_input.response_builder.response
 
-class IntentReflectorHandler(AbstractRequestHandler):
-    """The intent reflector is used for interaction model testing and debugging.
-    It will simply repeat the intent the user said. You can create custom handlers
-    for your intents by defining them above, then also adding them to the request
-    handler chain below.
-    """
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        return ask_utils.is_request_type("IntentRequest")(handler_input)
 
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        intent_name = ask_utils.get_intent_name(handler_input)
-        speak_output = "You just triggered " + intent_name + "."
+# class IntentReflectorHandler(AbstractRequestHandler):
+#     """The intent reflector is used for interaction model testing and debugging.
+#     It will simply repeat the intent the user said. You can create custom handlers
+#     for your intents by defining them above, then also adding them to the request
+#     handler chain below.
+#     """
+#     def can_handle(self, handler_input):
+#         # type: (HandlerInput) -> bool
+#         return ask_utils.is_request_type("IntentRequest")(handler_input)
 
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                # .ask("add a reprompt if you want to keep the session open for the user to respond")
-                .response
-        )
+#     def handle(self, handler_input):
+#         # type: (HandlerInput) -> Response
+#         intent_name = ask_utils.get_intent_name(handler_input)
+#         speak_output = "You just triggered " + intent_name + "."
+
+#         return (
+#             handler_input.response_builder
+#                 .speak(speak_output)
+#                 # .ask("add a reprompt if you want to keep the session open for the user to respond")
+#                 .response
+#         )
 
 
 class CatchAllExceptionHandler(AbstractExceptionHandler):
@@ -147,6 +149,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
     stating the request handler chain is not found, you have not implemented a handler for
     the intent being invoked or included it in the skill builder below.
     """
+
     def can_handle(self, handler_input, exception):
         # type: (HandlerInput, Exception) -> bool
         return True
@@ -158,11 +161,11 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         speak_output = "Sorry, I had trouble doing what you asked. Please try again."
 
         return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(speak_output)
-                .response
+            handler_input.response_builder.speak(speak_output)
+            .ask(speak_output)
+            .response
         )
+
 
 # The SkillBuilder object acts as the entry point for your skill, routing all request and response
 # payloads to the handlers above. Make sure any new handlers or interceptors you've
@@ -172,11 +175,11 @@ sb = SkillBuilder()
 
 sb.add_request_handler(RecordIntentHandler())
 sb.add_request_handler(LaunchRequestHandler())
-sb.add_request_handler(HelloWorldIntentHandler())
+# sb.add_request_handler(HelloWorldIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
-sb.add_request_handler(IntentReflectorHandler()) # make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
+# sb.add_request_handler(IntentReflectorHandler()) # make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
 sb.add_exception_handler(CatchAllExceptionHandler())
 
 handler = sb.lambda_handler()
