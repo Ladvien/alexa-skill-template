@@ -1,0 +1,29 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "The intent of this skill is to provide a simple way to access the Brittains Record, a book of the history of the Brittains family.",
+          "examplePhrases": [
+            "Brittains Record",
+            "Brittains book",
+            "Brittains codex"
+          ],
+          "name": "Brittains Record",
+          "description": "The intent of this skill is to provide a simple way to access the Brittains Record, a book of the history of the Brittains family."
+        }
+      },
+      "isAvailableWorldwide": false,
+      "testingInstructions": "Sample Testing Instructions.",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-west-2:553031127594:function:ask-jade-default-skillStack-169-AlexaSkillFunction-Jkz5jf4GlAKJ"
+        }
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}
