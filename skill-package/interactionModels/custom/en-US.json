@@ -19,12 +19,13 @@
                     "name": "RecordIntent",
                     "slots": [
                         {
-                            "name": "query",
+                            "name": "person",
                             "type": "AMAZON.SearchQuery"
                         }
                     ],
                     "samples": [
                         "record {query} for me",
+                        "record {query}",
                         "record this {query}",
                         "write this down {query}",
                         "note {query}",
