@@ -19,48 +19,30 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-class HouseElf:
-    """Encapsulates an Amazon DynamoDB table of record data."""
-
-    def __init__(self, region="us-west-2"):
-        boto3.setup_default_session(region_name=region)
-        self.dynamodb = boto3.resource("dynamodb")
-        self.table = self.dynamodb.Table("house_codex")
-
-    def record(self, record: dict):
-        self.table.put_item(Item=record)
-
-
 class RecordIntentHandler(AbstractRequestHandler):
     """Handler for Record Intent."""
 
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
+    def process(self, handler_input):
+        print("From process:")
+
+    def can_handle(self, handler_input) -> bool:
         return ask_utils.is_intent_name("RecordIntent")(handler_input)
 
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+    def handle(self, handler_input: HandlerInput) -> Response:
         speak_output = "Hey Casey, tell Rebekah she's got a damn fine ass!!"
-
-        house_elf = HouseElf()
-
-        house_elf.record(
-            {"user_name": "thomas", "event": speak_output}
-        )
-
+        # print(handler_input.attributes_manager)
+        print(handler_input.attributes_manager.request_attributes)
         return handler_input.response_builder.speak(speak_output).response
 
 
 class LaunchRequestHandler(AbstractRequestHandler):
     """Handler for Skill Launch."""
 
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
+    def can_handle(self, handler_input) -> bool:
 
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+    def handle(self, handler_input) -> Response:
         speak_output = (
             "Welcome, you can say Hello or Help. Which would you like to try?"
         )
@@ -151,11 +133,9 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
     """
 
     def can_handle(self, handler_input, exception):
-        # type: (HandlerInput, Exception) -> bool
         return True
 
     def handle(self, handler_input, exception):
-        # type: (HandlerInput, Exception) -> Response
         logger.error(exception, exc_info=True)
 
         speak_output = "Sorry, I had trouble doing what you asked. Please try again."

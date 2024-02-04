@@ -17,14 +17,19 @@
                 },
                 {
                     "name": "RecordIntent",
-                    "slots": [],
+                    "slots": [
+                        {
+                            "name": "activity",
+                            "type": "activity"
+                        }
+                    ],
                     "samples": [
-                        "record",
-                        "record this",
-                        "write this down",
-                        "take a note",
-                        "make a note",
-                        "write this"
+                        "record {activity} for me",
+                        "record this {activity}",
+                        "write this down {activity}",
+                        "note {activity}",
+                        "make a note about {activity}",
+                        "write this {activity}"
                     ]
                 },
                 {
@@ -32,7 +37,38 @@
                     "samples": []
                 }
             ],
-            "types": []
+            "types": [
+                {
+                    "name": "activity",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "lifted"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "walked"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "ran"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "lift"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "eat"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     }
 }

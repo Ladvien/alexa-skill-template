@@ -1,2 +1,3 @@
 ask-sdk-core>=1.10.2
 boto3>=1.34.34
+dyntastic>=0.14.0
