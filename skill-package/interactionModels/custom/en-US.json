@@ -19,17 +19,17 @@
                     "name": "RecordIntent",
                     "slots": [
                         {
-                            "name": "activity",
-                            "type": "activity"
+                            "name": "query",
+                            "type": "AMAZON.SearchQuery"
                         }
                     ],
                     "samples": [
-                        "record {activity} for me",
-                        "record this {activity}",
-                        "write this down {activity}",
-                        "note {activity}",
-                        "make a note about {activity}",
-                        "write this {activity}"
+                        "record {query} for me",
+                        "record this {query}",
+                        "write this down {query}",
+                        "note {query}",
+                        "make a note about {query}",
+                        "write this {query}"
                     ]
                 },
                 {
@@ -37,38 +37,7 @@
                     "samples": []
                 }
             ],
-            "types": [
-                {
-                    "name": "activity",
-                    "values": [
-                        {
-                            "name": {
-                                "value": "lifted"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "walked"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "ran"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "lift"
-                            }
-                        },
-                        {
-                            "name": {
-                                "value": "eat"
-                            }
-                        }
-                    ]
-                }
-            ]
+            "types": []
         }
     }
 }

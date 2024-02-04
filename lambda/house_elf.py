@@ -30,8 +30,8 @@ class RecordIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput) -> Response:
         speak_output = "Hey Casey, tell Rebekah she's got a damn fine ass!!"
-        # print(handler_input.attributes_manager)
-        print(handler_input.attributes_manager.request_attributes)
+
+        print(handler_input.request_envelope.request.intent.slots)
         return handler_input.response_builder.speak(speak_output).response
 
 
